@@ -2,7 +2,7 @@ import React from "react";
 
  const FormBtn = props => (
  
-  <button className="btn btn-success" onClick={() => {props.formatWorkout();props.btnUnclick();}} >
+  <button className="btn btn-success" onClick={() => props.formatWorkout()} >
   Submit
   </button>
 );
