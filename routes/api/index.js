@@ -8,5 +8,6 @@ router.use("/exercises", exerciseRoutes);
 router.use("/workouts", workoutRoutes);
 router.use("/user", userRoutes);
 router.use("/login", userRoutes);
+router.use("/logout", userRoutes);
 
 module.exports = router;
