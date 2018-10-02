@@ -6,8 +6,8 @@ class LoginForm extends Component {
     constructor() {
         super()
         this.state = {
-            username: '',
-            password: '',
+            Email: '',
+            Password: '',
             redirectTo: null
         }
         this.handleSubmit = this.handleSubmit.bind(this)
@@ -23,12 +23,13 @@ class LoginForm extends Component {
 
     handleSubmit(event) {
         event.preventDefault()
-        console.log('handleSubmit')
+        console.log('handleSubmit', this.state.Email);
+        console.log('Password:', this.state.Password);
 
         axios
-            .post('/user/login', {
-                username: this.state.username,
-                password: this.state.password
+            .post('http://localhost:3001/api/login', {
+                Email: this.state.Email,
+                Password: this.state.Password
             })
             .then(response => {
                 console.log('login response: ')
@@ -37,7 +38,7 @@ class LoginForm extends Component {
                     // update App.js state
                     this.props.updateUser({
                         loggedIn: true,
-                        username: response.data.username
+                        Email: response.data.Email
                     })
                     // update the state to redirect to home
                     this.setState({
@@ -61,29 +62,29 @@ class LoginForm extends Component {
                     <form className="form-horizontal">
                         <div className="form-group">
                             <div className="col-1 col-ml-auto">
-                                <label className="form-label" htmlFor="username">Username</label>
+                                <label className="form-label" htmlFor="Email">Email:</label>
                             </div>
                             <div className="col-3 col-mr-auto">
                                 <input className="form-input"
                                     type="text"
-                                    id="username"
-                                    name="username"
-                                    placeholder="Username"
-                                    value={this.state.username}
+                                    id="Email"
+                                    name="Email"
+                                    placeholder="Email"
+                                    value={this.state.Email}
                                     onChange={this.handleChange}
                                 />
                             </div>
                         </div>
                         <div className="form-group">
                             <div className="col-1 col-ml-auto">
-                                <label className="form-label" htmlFor="password">Password: </label>
+                                <label className="form-label" htmlFor="Password">Password: </label>
                             </div>
                             <div className="col-3 col-mr-auto">
                                 <input className="form-input"
-                                    placeholder="password"
-                                    type="password"
-                                    name="password"
-                                    value={this.state.password}
+                                    placeholder="Password"
+                                    type="Password"
+                                    name="Password"
+                                    value={this.state.Password}
                                     onChange={this.handleChange}
                                 />
                             </div>

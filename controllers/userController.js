@@ -1,5 +1,5 @@
 const db = require("../models");
-
+const User = require("../models/user");
 // Defining methods for the UsersController
 module.exports = {
   findAll: function(req, res) {
@@ -36,6 +36,32 @@ module.exports = {
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },
+
+findOne: function(req, res){
+  console.log('user signup');
+  const{ Email, Password, Name} = req.body
+  db.User
+  .findOne({Email:Email}, (err, user) => {
+  if (err) {
+    console.log('User.js post error: ', err)
+} else if (user) {
+    res.json({
+        error: `Sorry, already a user with the email: ${Email}`
+    })
+}
+else {
+    const newUser = new User({
+        Name: Name,
+        Password: Password,
+        Email: Email
+    })
+    newUser.save((err, savedUser) => {
+        if (err) return res.json(err)
+        res.json(savedUser)
+    })
+  }
+})
+},
 
 
 
