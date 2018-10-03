@@ -11,7 +11,7 @@ class App extends React.Component {
  
   state = {
     loggedIn: false,
-    username: null
+    Email: null
     
 }
 
@@ -21,25 +21,26 @@ this.getUser()
 }
 
 updateUser = (userObject) => {
+  console.log("WOrking?");
 this.setState(userObject)
 }
 
 getUser = ()  => {
-axios.get('/user/').then(response => {
+axios.get('http://localhost:3001/api/user').then(response => {
   console.log('Get user response: ')
-  console.log(response.data)
+  console.log("Data From Call:",response.data)
   if (response.data.user) {
     console.log('Get User: There is a user saved in the server session: ')
 
     this.setState({
       loggedIn: true,
-      username: response.data.user.username
+      Email: response.data.user.Email
     })
   } else {
     console.log('Get user: no user');
     this.setState({
       loggedIn: false,
-      username: null
+      Email: null
     })
   }
 })

@@ -2,7 +2,7 @@ const router = require("express").Router();
 const exerciseController = require("../../controllers/exerciseController");
 
 // Matches with "/api/exercises"
-router.route("/")
+router.route("/exercise")
   .get(exerciseController.findAll)
   .post(exerciseController.create);
 
