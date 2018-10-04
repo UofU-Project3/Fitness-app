@@ -27,3 +27,65 @@
   to { transform: rotate(360deg); }
 }
 
+.rbc-calendar {
+  flex: 1;
+  min-height: 580px;
+}
+
+.rbc-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.rbc-month-view {
+  position: relative;
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 0;
+  width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+
+  height: 100%;
+}
+
+.rbc-month-row {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  flex: 1 0 0; 
+  flex-basis: 0px;
+  overflow: hidden;
+
+  height: 100%; 
+
+  
+}
+
+.rbc-date-cell {
+  flex: 1 1 0;
+  min-width: 0;
+  padding-right: 5px;
+  text-align: right;
+}
+
+.rbc-month-header {
+  display: flex;
+  flex-direction: row;
+}
+.rbc-row-bg {
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 0;
+  overflow: hidden;
+}
+
+.rbc-day-bg {
+  flex: 1 0 0%;
+    border-left: 1px solid;
+  }
+  
+  .rbc-now {
+    font-weight: bold;
+  }

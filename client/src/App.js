@@ -3,11 +3,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Exercises from "./pages/Exercises";
 import Scheduler from "./pages/Scheduler";
 import Detail from "./pages/Detail";
-/* import NoMatch from "./pages/NoMatch";
-import Nav from "./components/Nav";*/
-import Scheduler from "./pages/Scheduler"; 
-
-
 import Home from "./pages/home";
 import Navbar from "./components/Nav/navbar";
 import Signup from './pages/sign-up';
