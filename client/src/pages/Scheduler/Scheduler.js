@@ -48,8 +48,11 @@ class Scheduler extends Component {
   render() {
     return (
       <div className="App">
-Text
-        {/*<MyCalendar
+
+
+
+        <MyCalendar
+
           defaultDate={new Date()}
           defaultView="month"
           events={this.state.events}
@@ -57,7 +60,8 @@ Text
           onEventResize={this.onEventResize}
           resizable
           style={{ height: "100vh" }}
-        />*/}
+        />
+
       </div>
     );
   }
