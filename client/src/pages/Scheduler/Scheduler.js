@@ -1,16 +1,26 @@
 import React, { Component } from "react";
-import Calendar from "react-big-calendar";
-import moment from "moment";
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
 import "./App.css"; 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import logo from "./logo.svg"; 
 
-Calendar.setLocalizer(Calendar.momentLocalizer(moment));  
 
-const DnDCalendar = withDragAndDrop(Calendar);
+import BigCalendar from 'react-big-calendar'
+import moment from 'moment'
+
+const localizer = BigCalendar.momentLocalizer(moment) 
+
+const MyCalendar = props => (
+  <div>
+    <BigCalendar
+      localizer={localizer}
+      events={["event1", "event2", "event3"]}
+      startAccessor="start"
+      endAccessor="end"
+    />
+  </div>
+)
 
 class Scheduler extends Component {
   state = {
@@ -38,14 +48,8 @@ class Scheduler extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          { <img src={logo} className="App-logo" alt="logo" /> }
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <DnDCalendar
+
+        <MyCalendar
           defaultDate={new Date()}
           defaultView="month"
           events={this.state.events}
