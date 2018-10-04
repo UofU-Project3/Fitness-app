@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Exercises from "./pages/Exercises";
+import Scheduler from "./pages/Scheduler";
 import Detail from "./pages/Detail";
 import Home from "./pages/home";
 import Navbar from "./components/Nav/navbar";
@@ -55,16 +56,13 @@ axios.get('http://localhost:3001/api/user').then(response => {
     <Navbar updateUser={this.updateUser} loggedIn={this.state.loggedIn} />
       {/*<Nav updateUser={this.updateUser} loggedIn={this.state.loggedIn}/>*/}
       <Switch>
-        <Route exact path="/exercise" component={Exercises} />
+      <Route exact path="/" component={Home} />
         <Route exact path="/exercises" component={Exercises} />
-        <Route exact path="/exercises/:id" component={Detail} />
-        <Route exact path="/" component={Home} />
-        <Route path="/login" render={() =>
-            <LoginForm updateUser={this.updateUser}/>}
-        />
-        <Route path="/signup" render={() =>
-            <Signup />}
-        />
+        {/*<Route exact path="/scheduler" component={Scheduler} />*/}
+        <Route path="/scheduler" render={() => <Scheduler />}/>
+        <Route exact path="/exercises/:id" component={Detail} />{/*Maybe use for Workout Day Details*/}
+        <Route path="/login" render={() => <LoginForm updateUser={this.updateUser}/>}/>
+        <Route path="/signup" render={() => <Signup />}/>
       </Switch>
       </div>
   </Router>
