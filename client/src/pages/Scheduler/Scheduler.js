@@ -15,7 +15,7 @@ const MyCalendar = props => (
   <div>
     <BigCalendar
       localizer={localizer}
-      events={["event1", "event2", "event3"]}
+      events={[{"event":"event1"}, {"event":"event2"}, {"event":"event3"}]}
       startAccessor="start"
       endAccessor="end"
     />
@@ -34,6 +34,7 @@ class Scheduler extends Component {
   };
 
   onEventResize = (type, { event, start, end, allDay }) => {
+    console.log("onEventResize:");
     this.setState(state => {
       state.events[0].start = start;
       state.events[0].end = end;
@@ -42,12 +43,12 @@ class Scheduler extends Component {
   };
 
   onEventDrop = ({ event, start, end, allDay }) => {
-    console.log(start);
+    console.log("onEventDrop Start:",start);
   };
 
   render() {
     return (
-      <div className="App">
+      <div className="App container">
 
 
 
