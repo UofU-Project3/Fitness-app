@@ -3,10 +3,10 @@ const db = require("../models");
 // Defining methods for the ExercisesController
 module.exports = {
   findAll: function(req, res) {
-    
+    console.log("Query: ",req.query);
     db.Exercise
       .find(req.query)
-      .sort({ date: -1 })
+      //.sort({ date: -1 })
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
       

@@ -4,9 +4,10 @@ import CollapseItem from "../../components/Accordion/Collapse.js";
 import API from "../../utils/API";
 import { Col, Row, Container } from "../../components/Grid";
 import ExerciseItem from "../../components/Form/ExerciseItem";
-//import PopoverExampleMulti from "../../components/Accordion/Popover.js";
+import ModalExample from "../../components/Modal/Modal.js";
 import Input from "../../components/Form/Input";
 import FormBtn from "../../components/Form/FormBtn.js";
+import { Button } from 'reactstrap';;
 
 class Exercises extends Component {
   constructor(props) {
@@ -31,7 +32,7 @@ class Exercises extends Component {
       workout: [],
 
     }
-    this.btn = React.createRef();
+    
   };
   //need an onClick Function to toggle collapses
 
@@ -56,7 +57,7 @@ class Exercises extends Component {
           this.sortExerciseTypes();
         }
       )
-      .catch(err => console.log(err));
+      .catch(err => console.log("Exercise Error:",err));
   };
   //filters exercises by their types
   sortExerciseTypes = () => {
@@ -219,10 +220,11 @@ console.log("TempARR: ",tempArr);
         <Row>
 
           <Col size="md-3 sm-12">
+          
+          <ModalExample
+          buttonLabel="Button"/>
             <div className="accordion" id="accordionExample">
-              {/*} Convert the 5 types into objects that have an array of of Muscle Groups, that way the array
-            that is mapped can be done once.
-            types:[cardios[musclegroups[exercises]], olympics[musclegroups[exercises]], powerliftings[musclegroups[exercises]], strengths[musclegroups[exercises]], stretches[musclegroups[exercises]]]*/}
+             
               <div className="card">
                 <div className="card-header" id="headingOne">
                   <h5 className="mb-0">

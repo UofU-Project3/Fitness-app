@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Exercises from "./pages/Exercises";
+import Scheduler from "./pages/Scheduler";
 import Detail from "./pages/Detail";
 /* import NoMatch from "./pages/NoMatch";
 import Nav from "./components/Nav";*/
@@ -63,7 +64,7 @@ axios.get('http://localhost:3001/api/user').then(response => {
       <Jumbotron></Jumbotron>
       
       <Switch>
-        <Route exact path="/exercise" component={Exercises} />
+      <Route exact path="/" component={Home} />
         <Route exact path="/exercises" component={Exercises} />
         <Route exact path="/exercises/:id" component={Detail} />
         <Route exact path="/scheduler" component={Scheduler} />

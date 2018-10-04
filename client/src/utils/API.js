@@ -3,11 +3,11 @@ import axios from "axios";
 export default {
   // Gets all exercises
   getExercises: function() {
-    return axios.get("/api/exercises");
+    return axios.get("/api/exercises/exercises");
   },
   // Gets the exercise with the given id
   getExercise: function(id) {
-    return axios.get("/api/exercises/" + id);
+    return axios.get("/api/exercise/" + id);
   },
   // Deletes the exercise with the given id
   deleteExercise: function(id) {

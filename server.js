@@ -12,9 +12,9 @@ const cors = require('cors')
 const PORT = process.env.PORT || 3001;
 
 // Define middleware here
-app.use(morgan('dev'))
+app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors())
+app.use(cors());
 app.use(bodyParser.json());
 
 // Serve up static assets (usually on heroku)
