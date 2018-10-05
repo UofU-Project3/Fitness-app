@@ -89,3 +89,56 @@
   .rbc-now {
     font-weight: bold;
   }
+
+  body {
+		margin-top: 40px;
+		text-align: center;
+		font-size: 14px;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+	}
+
+  h1 {
+    font-size: 35px;
+    margin-bottom: 30px;
+  }
+		
+	#app {
+		width: 1100px;
+		margin: 0 auto;
+	}
+		
+	#external-ambulances {
+		float: left;
+		width: 120px;
+		padding: 0 10px;
+		border: 1px solid #ccc;
+		background: #eee;
+    text-align: center;
+	}
+		
+	#external-ambulances h4 {
+		font-size: 16px;
+		margin-top: 0;
+		padding-top: 1em;
+	}
+		
+	#external-ambulances .fc-event {
+		margin: 10px 0;
+		cursor: pointer;
+	}
+		
+	#external-ambulances p {
+		margin: 1.5em 0;
+		font-size: 11px;
+		color: #666;
+	}
+		
+	#external-ambulances p input {
+		margin: 0;
+		vertical-align: middle;
+	}
+
+	#calendar {
+		float: right;
+		width: 900px;
+	}

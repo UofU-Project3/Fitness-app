@@ -4,10 +4,11 @@ import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 import "./App.css"; 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-
-
-import BigCalendar from 'react-big-calendar'
-import moment from 'moment'
+import $ from 'jquery';
+import 'jquery-ui-bundle';
+import 'jquery-ui-bundle/jquery-ui.css';
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
 
 const localizer = BigCalendar.momentLocalizer(moment) 
 
@@ -21,6 +22,40 @@ const MyCalendar = props => (
     />
   </div>
 )
+
+class External extends React.Component {
+  render() {
+    return <div id='external-ambulances'>
+			<h4>Drag and Drop Workouts</h4>
+			<div className='fc-event'>Workout 1</div>
+			<div className='fc-event'>Workout 2</div>
+			<div className='fc-event'>Workout 3</div>
+			<div className='fc-event'>Workout 4</div>
+			<div className='fc-event'>Workout 5</div>
+			<p>
+				<input type='checkbox' id='drop-remove' />
+				<label for='drop-remove'>remove after drop</label>
+			</p>
+		</div>;
+  }
+  componentDidMount() {
+		$('#external-ambulances .fc-event').each(function() {
+
+			// store data so the calendar knows to render an ambulance upon drop
+			$(this).data('event', {
+				title: $.trim($(this).text()), // use the element's text as the title
+				stick: true // maintain when user navigates (see docs on the renderEvent method)
+			});
+
+			// make the ambulance draggable using jQuery UI
+			$(this).draggable({
+				zIndex: 999,
+				revert: true,      // will cause the event to go back to its
+				revertDuration: 0  //  original position after the drag
+			});
+		});
+  }
+}
 
 class Scheduler extends Component {
   state = {
@@ -50,8 +85,6 @@ class Scheduler extends Component {
     return (
       <div className="App container">
 
-
-
         <MyCalendar
 
           defaultDate={new Date()}
@@ -68,76 +101,11 @@ class Scheduler extends Component {
   }
 }
 
-export default Scheduler; 
-
-
-
-
-
-
-
- /* import React, { Component } from "react";
-import API from "../../utils/API";
-  import SearchForm from "../components/SearchForm";
-import SearchResults from "../components/SearchResults";
-import Alert from "../components/Alert";  
-import Jumbotron from "../../components/Jumbotron";
-import { Col, Row, Container } from "../../components/Grid"; 
-
-class Calendar extends Component {
-  state = {
-    search: "",
-    breeds: [],
-    results: [],
-    error: ""
-  };
-
-  // When the component mounts, get a list of all available base breeds and update this.state.breeds
-    componentDidMount() {
-    API.getBaseBreedsList()
-      .then(res => this.setState({ breeds: res.data.message }))
-      .catch(err => console.log(err));
-  } 
-
-  handleInputChange = event => {
-    this.setState({ search: event.target.value });
-  }; 
-
-  handleFormSubmit = event => {
-    event.preventDefault();
-    API.getDogsOfBreed(this.state.search)
-      .then(res => {
-        if (res.data.status === "error") {
-          throw new Error(res.data.message);
-        }
-        this.setState({ results: res.data.message, error: "" });
-      })
-      .catch(err => this.setState({ error: err.message }));
-  };
+class Application extends React.Component {
   render() {
-    return (
-
-        <div>
-      <Jumbotron backgroundImage="https://static.smartgurutips.com//uploads/2018/05/Exercise.jpg">
-     <h1>Fitness App</h1>
-     <h2>Achieve your goals!</h2>
-      </Jumbotron>   
-
-<Container style={{ marginTop: 25}}>
-     <Row>
-       <Col size="md-4" style={{backgroundColor:"beige"}} >
-         <h1>Column 1</h1>
-       </Col>
-     
-       <Col size="md-8" style={{backgroundColor:"#bbb"}}>
-       <h1>Column 2</h1>
-       </Col>
-     </Row>
-   </Container>
-
-</div>   
-    );
+    return <div><External />
+      <Scheduler /></div>;
   }
 }
 
-export default Calendar; */ 
+export default Application;
