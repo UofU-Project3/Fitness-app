@@ -1,5 +1,5 @@
 import React from "react";
-import NumericInput from 'react-numeric-input';
+//import NumericInput from 'react-numeric-input';
 
  const ExerciseItem = props => (
   
@@ -8,8 +8,10 @@ import NumericInput from 'react-numeric-input';
         Remove
         </button>
         <li className="list-group-item" id={props.id}>
-          <strong>{props.name}</strong> 
-          <NumericInput/>
+          <span><strong>{props.name}</strong> - </span>
+          <span><strong>{props.reps}</strong>  </span>
+
+          {/*<NumericInput className={props.id} min={0}/>*/}
         </li>
       </ul>
       
