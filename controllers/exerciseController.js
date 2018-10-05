@@ -2,14 +2,35 @@ const db = require("../models");
 
 // Defining methods for the ExercisesController
 module.exports = {
-  findAll: function(req, res) {
-    console.log("Query: ",req.query);
+  findStrength: function(req, res) { 
     db.Exercise
-      .find(req.query)
-      //.sort({ date: -1 })
+      .find({Type: "Strength"})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
-      
+  },
+  findCardio: function(req, res) { 
+    db.Exercise
+      .find({Type: "Cardio"})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findStretching: function(req, res) { 
+    db.Exercise
+      .find({Type: "Stretching"})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findPowerlifting: function(req, res) { 
+    db.Exercise
+      .find({Type: "Powerlifting"})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
+  },
+  findOlympic: function(req, res) { 
+    db.Exercise
+      .find({Type: "Olympic Weight Lifting"})
+      .then(dbModel => res.json(dbModel))
+      .catch(err => res.status(422).json(err));
   },
   findById: function(req, res) {
     db.Exercise
@@ -35,5 +56,14 @@ module.exports = {
       .then(dbModel => dbModel.remove())
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
-  }
+  },
+  find: function(req, res){
+    console.log('Type Search', req);
+    
+    db.Exercise
+    .find({Type: req.Type}, (err, res) => {
+    
+    console.log("Find Results:",res.data);
+  })
+  },
 };

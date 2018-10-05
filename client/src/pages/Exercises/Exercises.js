@@ -7,14 +7,14 @@ import ExerciseItem from "../../components/Form/ExerciseItem";
 import ModalExample from "../../components/Modal/Modal.js";
 import Input from "../../components/Form/Input";
 import FormBtn from "../../components/Form/FormBtn.js";
-import { Button } from 'reactstrap';;
+import LoadingSpinner from "../../components/Loading/Spinner.js";
+
 
 class Exercises extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      
-      exercises: [],
+      typeArray: ["Cardio", "Olympic Weight Lifting", "Powerlifting", "Strength", "Stretching"],
       strengths: [],
       stretches: [],
       olympics: [],
@@ -30,20 +30,27 @@ class Exercises extends Component {
       selectedExercise: "",
       selectedExercises: [],
       workout: [],
-
+      loading: true,
+      strengthsClicked: false,
+      stretchesClicked: false,
+      olympicsClicked: false,
+      cardiosClicked: false,
+      powerliftingsClicked: false,
     }
-    
+    this.btn = React.createRef();
   };
   //need an onClick Function to toggle collapses
 
   componentDidMount() {
-    this.loadExercises();
-
+   
+//this.typeExercises();
   }
 
-  loadExercises = () => {
+
+
+  loadExercises = (type) => {
     console.log("got triggered");
-    API.getExercises()
+    API.getExercises({Type: type})
       .then(
         res => {
 
@@ -59,24 +66,6 @@ class Exercises extends Component {
       )
       .catch(err => console.log("Exercise Error:",err));
   };
-  //filters exercises by their types
-  sortExerciseTypes = () => {
-    console.log(this.state.exercises[0].Type);
-    const strengths = this.state.exercises.filter(strength => strength.Type !== "Stretching" && strength.Type !== "Olympic Weight Lifting" && strength.Type !== "Powerlifting" && strength.Type !== "Cardio");
-    const stretches = this.state.exercises.filter(stretch => stretch.Type !== "Strength" && stretch.Type !== "Olympic Weight Lifting" && stretch.Type !== "Powerlifting" && stretch.Type !== "Cardio");
-    const olympics = this.state.exercises.filter(olympic => olympic.Type !== "Stretching" && olympic.Type !== "Strength" && olympic.Type !== "Powerlifting" && olympic.Type !== "Cardio");
-    const cardios = this.state.exercises.filter(cardio => cardio.Type !== "Stretching" && cardio.Type !== "Olympic Weight Lifting" && cardio.Type !== "Powerlifting" && cardio.Type !== "Strength");
-    const powerliftings = this.state.exercises.filter(powerlifting => powerlifting.Type !== "Stretching" && powerlifting.Type !== "Olympic Weight Lifting" && powerlifting.Type !== "Strength" && powerlifting.Type !== "Cardio");
-
-    this.setState({
-      strengths: strengths,
-      stretches: stretches,
-      olympics: olympics,
-      cardios: cardios,
-      powerliftings: powerliftings
-    })
-    this.sortMuscles();
-  }
   //creates list of muscle groups by type
   sortMuscles = () => {
     const strengthMuscles = [];
@@ -110,7 +99,6 @@ class Exercises extends Component {
         powerliftingMuscles.push(element.Main_Muscle_Group);
       }
     })
-
     this.setState({
       strengthsMuscles: strengthMuscles,
       stretchesMuscles: stretchMuscles,
@@ -118,8 +106,6 @@ class Exercises extends Component {
       cardiosMuscles: cardioMuscles,
       powerliftingsMuscles: powerliftingMuscles
     })
-
-
   }
 
   //pushes the exercise id & name into an array upon clicking the save button
@@ -194,27 +180,81 @@ console.log("TempARR: ",tempArr);
     console.log(value);
   };
 
-  //this refreshes the form
-  searchArticles = query => {
-    //gets from database
-    API.search(query)
-      .then(res => {
-        console.log(this.state)
-        this.setState({
-          results: res.data.response.docs,
-          search: "", startDate: "", endDate: ""
-        })
-        console.log(this.state)
-      }
-      )
-      .catch(err => console.log(err));
 
+  accordionClick = event => {
+  
+    const { name, value } = event.target;
+   
+  switch(value){
+  case "Cardio":
+  if(this.state.cardiosClicked === false){
+  API.getExercises(value)
+  .then(
+    res => {console.log("type Results", res.data);
+    const cardios = res.data;
+    this.setState({cardios: cardios,
+    cardiosClicked: true
+    });
+    this.sortMuscles();}).catch(err => console.log(err));
+
+  }
+  break;
+  case "Olympic Weight Lifting":
+  if(this.state.olympicsClicked === false){
+  API.getExercises(value)
+  .then(
+    res => {console.log("type Results", res.data);
+    const olympics= res.data; 
+    this.setState({olympics: olympics,
+    olympicsClicked: true
+    });
+    this.sortMuscles();}).catch(err => console.log(err));
+  }
+  break;
+  case "Powerlifting":
+  if(this.state.powerliftingsClicked === false){
+  API.getExercises(value)
+  .then(
+    res => {console.log("type Results", res.data);
+    const powerliftings= res.data; 
+    this.setState({powerliftings: powerliftings,
+    powerliftingsClicked: true
+    });
+    this.sortMuscles();}).catch(err => console.log(err));
+  }
+  break;
+  case "Strength":
+  if(this.state.strengthsClicked === false){
+  API.getExercises(value)
+  .then(
+    res => {console.log("type Results", res.data);
+    const strengths= res.data; 
+    this.setState({strengths: strengths,
+    strengthsClicked: true,
+    loading:false
+  });
+    this.sortMuscles();}).catch(err => console.log(err));
+  }
+  break;
+  case "Stretching":
+  if(this.state.stretchesClicked === false){
+  API.getExercises(value)
+  .then(
+    res => {console.log("type Results", res.data);
+    const stretches= res.data;
+    this.setState({stretches: stretches,
+    stretchesClicked: true
+    });
+    this.sortMuscles();}).catch(err => console.log(err));
+  }
+  break;
+
+  }
   };
-
- 
 
 
   render() {
+    const { strengths, loading } = this.state;
     return (
       <Container fluid>
         <Row>
@@ -228,14 +268,16 @@ console.log("TempARR: ",tempArr);
               <div className="card">
                 <div className="card-header" id="headingOne">
                   <h5 className="mb-0">
-                    <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <button name="Type" value="Cardio" className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onClick={this.accordionClick}>
                       Cardio
                     </button>
                   </h5>
                 </div>
                 <div id="collapseOne" className="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                
                   <div className="card-body">
                     <ul>
+                      
                       {this.state.cardiosMuscles.map(cardio => (
                         <ExerciseType
                           key={cardio.replace(/\s/g, '') + "Type"}
@@ -259,13 +301,14 @@ console.log("TempARR: ",tempArr);
                       ))}
                     </ul>
                   </div>
+               
                 </div>
               </div>
 
               <div className="card">
                 <div className="card-header" id="headingTwo">
                   <h5 className="mb-0">
-                    <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    <button name="Type" value="Olympic Weight Lifting" className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo" onClick={this.accordionClick}>
                       Olympic Weight Lifting
                     </button>
                   </h5>
@@ -305,7 +348,7 @@ console.log("TempARR: ",tempArr);
               <div className="card">
                 <div className="card-header" id="headingThree">
                   <h5 className="mb-0">
-                    <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                    <button name="Type" value="Powerlifting" className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree" onClick={this.accordionClick}>
                       Powerlifting
                     </button>
                   </h5>
@@ -343,14 +386,16 @@ console.log("TempARR: ",tempArr);
               <div className="card">
                 <div className="card-header" id="headingFour">
                   <h5 className="mb-0">
-                    <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                    <button name="Type" value="Strength" className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour" onClick={this.accordionClick}>
                       Strength
                     </button>
                   </h5>
                 </div>
                 <div id="collapseFour" className="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
                   <div className="card-body">
+                  {loading ?( <LoadingSpinner /> ) : (
                     <ul>
+                    
                       {this.state.strengthsMuscles.map(strength => (
 
                         <ExerciseType
@@ -374,7 +419,10 @@ console.log("TempARR: ",tempArr);
                             />))}
                         </ExerciseType>
                       ))}
+                   
+                        
                     </ul>
+                    )}
                   </div>
                 </div>
               </div>
@@ -382,7 +430,7 @@ console.log("TempARR: ",tempArr);
               <div className="card">
                 <div className="card-header" id="headingFive">
                   <h5 className="mb-0">
-                    <button className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                    <button name="Type" value="Stretching" className="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive" onClick={this.accordionClick}>
                       Stretches
                     </button>
                   </h5>
