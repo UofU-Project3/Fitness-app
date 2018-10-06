@@ -18,14 +18,15 @@ import 'fullcalendar/dist/fullcalendar.js';
 
 class External extends React.Component {
   state ={
-    workouts:[]
+    workouts:[], 
+    filteredWorkouts: []
   };
   render() {
     return <div id='external-workouts'>
 			<h4>Drag and Drop Workouts</h4>
       <div>
-      {this.state.workouts.map(workout => (
-			<div className='fc-event' data-duration="01:00">{workout.Name}</div>
+      {this.state.filteredWorkouts.map(filteredWorkout => (
+			<div key={filteredWorkout._id} className='fc-event' data-duration="01:00">{filteredWorkout.Name}</div>
 			
       ))}
       </div>
@@ -56,11 +57,18 @@ console.log(CreatedBy);
   }
   getWorkouts = CreatedBy => {
     API.getWorkouts()
-      .then(res => this.setState({
+      .then(res => {this.setState({
         workouts: res.data,
-       }))
+       })
+       this.filterResults(CreatedBy);
+       } )
       .catch(err => console.log(err));
   };
+
+  filterResults(CreatedBy){
+    const filteredWorkouts = this.state.workouts.filter(workout => workout.CreatedBy === CreatedBy);
+ this.setState({filteredWorkouts:filteredWorkouts});
+  }
 }
 
 class Calendar extends React.Component {
