@@ -20,11 +20,11 @@ class External extends React.Component {
   render() {
     return <div id='external-workouts'>
 			<h4>Drag and Drop Workouts</h4>
-			<div className='fc-event'>Workout 1</div>
-			<div className='fc-event'>Workout 2</div>
-			<div className='fc-event'>Workout 3</div>
-			<div className='fc-event'>Workout 4</div>
-			<div className='fc-event'>Workout 5</div>
+			<div className='fc-event' data-duration="01:00">Workout 1</div>
+			<div className='fc-event' data-duration="01:00">Workout 2</div>
+			<div className='fc-event' data-duration="01:00">Workout 3</div>
+			<div className='fc-event' data-duration="01:00">Workout 4</div>
+			<div className='fc-event' data-duration="01:00">Workout 5</div>
 
 		</div>;
   }
@@ -41,7 +41,8 @@ class External extends React.Component {
 			 $(this).draggable({
 				zIndex: 999,
 				revert: true,      // will cause the event to go back to its
-				revertDuration: 0  //  original position after the drag
+        revertDuration: 0,  //  original position after the drag
+       
 			}); 
 		});
   }
@@ -61,14 +62,10 @@ class Calendar extends React.Component {
       defaultView: 'agendaWeek',
       editable: true,
       eventTextColor: "yellow",
-      droppable: true, 
-      
-      eventClick: function(calEvent, jsEvent, view) {
-
-        alert('Event: ' + calEvent.title);
-
-        
-      }
+      droppable: true,
+      /* drop: function(date) {
+        alert("Dropped on " + date.format());
+      } */
 
 			
     })

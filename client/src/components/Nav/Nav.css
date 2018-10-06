@@ -1,3 +1,25 @@
-nav.navbar.navbar-default {
-  margin-bottom: 0;
+.navbar {
+  margin-bottom: 0px;
+   
 }
+
+#nav-container {
+  background-color: #0B3558; 
+  color: #995202;
+  font-size: 80px;
+  font-family: 'Shadows Into Light', cursive; 
+  height: 50px;
+}
+
+.link {
+  color: #998F38;
+  font-size: 20px;
+}
+
+.inspire {
+  color: #0B3558;
+  font-size: 45px;
+  font-family: 'Shadows Into Light', cursive; 
+  padding-top: 30px;
+}
+
