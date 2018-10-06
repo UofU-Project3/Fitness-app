@@ -22,7 +22,7 @@ class Navbar extends Component {
 
                 
                     <div className="col-12 col-mr-auto" >
-                        {loggedIn ? (
+                        {this.props.loggedIn ? (
                             <section className="navbar-section">
                                 <Link to="#" className="btn btn-link text-secondary" onClick={this.logout}>
                                 <span className="link">logout</span></Link>
