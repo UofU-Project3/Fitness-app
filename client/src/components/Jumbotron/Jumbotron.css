@@ -33,3 +33,12 @@
   padding-top: 140px;
   margin-top: 0;
 }
+
+.title {
+  color: white;
+  font-size: 165px;
+  font-family: 'Shadows Into Light', cursive; 
+  text-align: center;
+  padding-top: 60px;
+
+}
