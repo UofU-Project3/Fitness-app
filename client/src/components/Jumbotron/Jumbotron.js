@@ -3,7 +3,7 @@ import "./Jumbotron.css";
 
 const Jumbotron = props => (
   <div className="hero text-center">
-    {props.children}
+    {<p className="title">GitFit</p>}
   </div>
 );
 

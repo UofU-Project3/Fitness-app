@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Route, Link } from 'react-router-dom'
 
-import '../App.css';
+import './Nav.css';
 import axios from 'axios'
 
 class Navbar extends Component {
@@ -35,41 +35,42 @@ class Navbar extends Component {
         return (
             <div>
 
-                <header className="navbar App-header" id="nav-container">
-                    <div className="col-4" >
+                <div className="navbar" id="nav-container">
+
+                
+                    <div className="col-12 col-mr-auto" >
                         {loggedIn ? (
                             <section className="navbar-section">
                                 <Link to="#" className="btn btn-link text-secondary" onClick={this.logout}>
-                                <span className="text-secondary">logout</span></Link>
+                                <span className="link">logout</span></Link>
 
                             </section>
                         ) : (
                                 <section className="navbar-section">
                                     <Link to="/" className="btn btn-link text-secondary">
-                                        <span className="text-secondary">home</span>
+                                        <span className="link">home</span>
                                         </Link>
                                     <Link to="/login" className="btn btn-link text-secondary">
-                                    <span className="text-secondary">login</span>
+                                    <span className="link">login</span>
 				                    </Link>
                                     <Link to="/signup" className="btn btn-link">
-                                    <span className="text-secondary">sign up</span>
+                                    <span className="link">sign up</span>
 				                    </Link>
                                     <Link to="/exercises" className="btn btn-link">
-                                    <span className="text-secondary">dashboard</span>
+                                    <span className="link">exercises</span>
 			                    	</Link>
                                     <Link to="/scheduler" className="btn btn-link">
-                                    <span className="text-secondary">calendar</span>
+                                    <span className="link">calendar</span>
 			                    	</Link>
+                                    
                                 </section>
+                                
                             )}
                     </div>
-                    <div className="col-4 col-mr-auto">
-                    <div id="top-filler"></div>
-                        
-
-                        <h1 className="App-title">MERN Passport</h1>
-                    </div>
-                </header>
+                    
+                    
+                    
+                </div>
             </div>
 
         );
