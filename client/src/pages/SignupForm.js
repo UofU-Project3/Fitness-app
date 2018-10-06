@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { Col, Row, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 
-class Signup extends Component {
+class SignupForm extends Component {
 	constructor() {
 		super()
 		this.state = {
-			Name: '',
-			Password: '',
+			username: '',
+			password: '',
 			confirmPassword: '',
-			Email: ''
+			redirectTo: null
 		}
-		//this.handleSubmit = this.handleSubmit.bind(this)
+		this.handleSubmit = this.handleSubmit.bind(this)
 		this.handleChange = this.handleChange.bind(this)
 	}
 	handleChange(event) {
@@ -21,34 +22,33 @@ class Signup extends Component {
 	}
 	handleSubmit = (event) => {
 		console.log('sign-up handleSubmit, username: ')
-		console.log(this.state.Name)
+		console.log(this.state.username)
 		event.preventDefault()
 
 		//request to server to add a new username/password
-		axios.post('http://localhost:3001/api/user', {
-			Name: this.state.Name,
-			Password: this.state.Password,
-			Email: this.state.Email
-		})
+		axios
+			.post('/auth/signup', {
+				username: this.state.username,
+				password: this.state.password
+			})
 			.then(response => {
-				console.log("Sign-up.js:",response)
+				console.log(response)
 				if (!response.data.errmsg) {
-					console.log('successful signup')
-					this.setState({ 
+					console.log('youre good')
+					this.setState({
 						redirectTo: '/login'
 					})
 				} else {
-					console.log('email already taken')
+					console.log('duplicate')
 				}
-			}).catch(error => {
-				console.log('signup error: ')
-				console.log(error)
-
 			})
 	}
 
 
 	render() {
+		if (this.state.redirectTo) {
+			return <Redirect to={{ pathname: this.state.redirectTo }} />
+		}
 		return (
 			<div className="SignupForm">
 				<h4 className="text-center">Sign up</h4>
@@ -57,13 +57,13 @@ class Signup extends Component {
 					<Row>
 						<Col md={{ size: 4, offset: 4 }}>
 							<FormGroup>
-								<Label for="Email">Email:</Label>
+								<Label for="username">Username:</Label>
 								<Input className="form-input"
-									type="Email"
-									name="Email"
-									id="Email"
-									placeholder="Email Address"
-									value={this.state.Email}
+									type="string"
+									name="username"
+									id="username"
+									placeholder="Username"
+									value={this.state.username}
 									onChange={this.handleChange} />
 							</FormGroup>
 						</Col>
@@ -71,30 +71,17 @@ class Signup extends Component {
 					<Row>
 						<Col md={{ size: 4, offset: 4 }}>
 							<FormGroup>
-								<Label className="form-label" htmlFor="Password">Password:</Label>
+								<Label className="form-label" htmlFor="password">Password:</Label>
 								<Input className="form-input"
 									placeholder="Password"
-									type="Password"
-									name="Password"
-									value={this.state.Password}
+									type="password"
+									name="password"
+									value={this.state.password}
 									onChange={this.handleChange} />
 							</FormGroup>
 						</Col>
 					</Row>
-					<Row>
-						<Col md={{ size: 4, offset: 4 }}>
-							<FormGroup>
-								<Label className="form-label" htmlFor="Name">Name:</Label>
-								<Input className="form-input"
-									type="text"
-									id="Name"
-									name="Name"
-									placeholder="Name"
-									value={this.state.Name}
-									onChange={this.handleChange} />
-							</FormGroup>
-						</Col>
-					</Row>
+					
 					<Row>
 						<Col md={{ size: 4, offset: 4 }}>
 							<Button
@@ -109,4 +96,4 @@ class Signup extends Component {
 	}
 }
 
-export default Signup
+export default SignupForm

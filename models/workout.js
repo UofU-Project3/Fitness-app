@@ -5,7 +5,7 @@ const workoutSchema = new Schema({
   Name: { type: String, required: true },
   Dates: [Date],
   Exercises: Array,
-  CreatedBy: { type: Schema.Types.ObjectId, ref: 'User' }
+  CreatedBy: String,
 
 });
 

@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3001;
 
 // Define middleware here
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -23,6 +23,7 @@ if (process.env.NODE_ENV === "production") {
 }
 // Sessions
 app.use(
+	
 	session({
 		secret: 'fraggle-rock', //pick a random string to make the hash that is generated secure
 		store: new MongoStore({ mongooseConnection: mongoose.connection }),
@@ -40,6 +41,12 @@ app.use(routes);
 
 // Connect to the Mongo DB
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/exerciselist");
+
+app.use(function(err, req, res, next) {
+	console.log('====== ERROR =======')
+	console.error(err.stack)
+	res.status(500)
+})
 
 // Start the API server
 app.listen(PORT, function() {

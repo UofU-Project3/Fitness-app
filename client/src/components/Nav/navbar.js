@@ -6,32 +6,15 @@ import './Nav.css';
 import axios from 'axios'
 
 class Navbar extends Component {
-    constructor() {
-        super()
-        this.logout = this.logout.bind(this)
-    }
 
-    logout(event) {
-        event.preventDefault()
-        console.log('logging out')
-        axios.post('http://localhost:3001/api/logout').then(response => {
-          console.log(response.data)
-          if (response.status === 200) {
-            this.props.updateUser({
-              loggedIn: false,
-              username: null
-            })
-          }
-        }).catch(error => {
-            console.log('Logout error')
-        })
-      }
+
+
 
     render() {
-        const loggedIn = this.props.loggedIn;
-        console.log('navbar render, props: ')
-        console.log(this.props);
-        
+
+
+
+
         return (
             <div>
 
@@ -44,10 +27,12 @@ class Navbar extends Component {
                                 <Link to="#" className="btn btn-link text-secondary" onClick={this.logout}>
                                 <span className="link">logout</span></Link>
 
+
                             </section>
                         ) : (
                                 <section className="navbar-section">
                                     <Link to="/" className="btn btn-link text-secondary">
+
                                         <span className="link">home</span>
                                         </Link>
                                     <Link to="/login" className="btn btn-link text-secondary">
@@ -63,14 +48,17 @@ class Navbar extends Component {
                                     <span className="link">calendar</span>
 			                    	</Link>
                                     
+
                                 </section>
                                 
                             )}
                     </div>
+
                     
                     
                     
                 </div>
+
             </div>
 
         );
