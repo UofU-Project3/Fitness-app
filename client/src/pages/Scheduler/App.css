@@ -107,38 +107,40 @@
 		margin: 0 auto;
 	}
 		
-	#external-ambulances {
+	#external-workouts {
 		float: left;
 		width: 120px;
-		padding: 0 10px;
+    padding: 0 10px;
+    margin: 30px;
 		border: 1px solid #ccc;
 		background: #eee;
     text-align: center;
 	}
 		
-	#external-ambulances h4 {
+	#external-workouts h4 {
 		font-size: 16px;
 		margin-top: 0;
 		padding-top: 1em;
 	}
 		
-	#external-ambulances .fc-event {
+	#external-workouts .fc-event {
 		margin: 10px 0;
-		cursor: pointer;
+    cursor: pointer;
 	}
 		
-	#external-ambulances p {
+	#external-workouts p {
 		margin: 1.5em 0;
 		font-size: 11px;
 		color: #666;
 	}
 		
-	#external-ambulances p input {
+	#external-workouts p input {
 		margin: 0;
-		vertical-align: middle;
+    vertical-align: middle;
 	}
 
 	#calendar {
-		float: right;
-		width: 900px;
+    float: right;
+    margin: 30px;
+    width: 750px;
 	}
