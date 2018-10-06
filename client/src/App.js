@@ -65,6 +65,8 @@ _logout(event) {
         loggedIn: false,
         user: null
       })
+      sessionStorage.clear();
+      
     }
   })
 }
