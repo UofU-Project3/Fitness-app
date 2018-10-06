@@ -23,7 +23,8 @@ export default {
   },
   // Saves a exercise to the database
   saveWorkout: function(workoutData) {
-    return axios.post("/api/workouts", workoutData);
+    console.log("workoutData:", workoutData);
+    return axios.post("/api/workouts/workouts", workoutData);
   },
   updateWorkout: function(id) {
     return axios.put("/api/workouts/"+ id);

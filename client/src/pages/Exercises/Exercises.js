@@ -36,21 +36,22 @@ class Exercises extends Component {
       olympicsClicked: false,
       cardiosClicked: false,
       powerliftingsClicked: false,
+      reps: ""
     }
     this.btn = React.createRef();
   };
   //need an onClick Function to toggle collapses
 
   componentDidMount() {
-   
-//this.typeExercises();
+
+    //this.typeExercises();
   }
 
 
 
   loadExercises = (type) => {
     console.log("got triggered");
-    API.getExercises({Type: type})
+    API.getExercises({ Type: type })
       .then(
         res => {
 
@@ -64,7 +65,7 @@ class Exercises extends Component {
           this.sortExerciseTypes();
         }
       )
-      .catch(err => console.log("Exercise Error:",err));
+      .catch(err => console.log("Exercise Error:", err));
   };
   //creates list of muscle groups by type
   sortMuscles = () => {
@@ -110,63 +111,118 @@ class Exercises extends Component {
 
   //pushes the exercise id & name into an array upon clicking the save button
   saveExercise = (result) => {
-    
-    const workoutName = this.state.workoutName;
-    if(workoutName === ""){
-    let newWorkout = prompt("What do you want to Call New Workout?", "New Workout");
-    if (newWorkout === null || newWorkout === "") {
-      alert("Workout must be named!");
+    console.log("saveExercise Result:", result);
+    let reps = prompt(`How many Reps of ${result.Name}`, "10");
+    if (reps === null || reps === "") {
+      alert("Reps must be specified!");
     } else {
+      const newExercise = {
+        name: result.Name,
+        main_Muscle_Group: result.Main_Muscle_Group,
+        detailed_Muscle_Group: result.Detailed_Muscle_Group,
+        other_Muscle_Groups: [result.Other_Muscle_Groups],
+        type: result.Type,
+        mechanics: result.Mechanics,
+        equipment: [result.Equipment],
+        difficulty: result.Difficulty,
+        description: [result.Description],
+        instructions: [result.Instructions],
+        tips: [result.Tips],
+        reps: reps,
+        id: result._id
+      };
+      console.log("saveExercise New:", newExercise);
+      const workoutName = this.state.workoutName;
 
-      const selectedExercise = { name: result.Name, exercise: result._id };
-      //selectedExercises.push(selectedExercise);
-      this.setState({
-        selectedExercises: [...this.state.selectedExercises, selectedExercise],
-        workoutName: newWorkout
-      });
-      console.log("State of selectedExercises in saveExercise: ", this.state.selectedExercises);
+      if (workoutName === "") {
+        let newWorkout = prompt("What do you want to Call New Workout?", "New Workout");
+        if (newWorkout === null || newWorkout === "") {
+          alert("Workout must be named!");
+        } else {
+
+          const selectedExercise = {
+            name: newExercise.name,
+          exercise: newExercise.id,
+          reps: newExercise.reps,
+          equipment: newExercise.equipment,
+          difficulty: newExercise.difficulty,
+          description: newExercise.description,
+          instructions: newExercise.instructions,
+          tips: newExercise.tips,
+          };
+
+          this.setState({
+            selectedExercises: [...this.state.selectedExercises, selectedExercise],
+            workoutName: newWorkout
+          });
+          console.log("State of selectedExercises in saveExercise: ", this.state.selectedExercises);
+        }
+      } else {
+
+        const selectedExercise = {
+          name: newExercise.name,
+          exercise: newExercise.id,
+          reps: newExercise.reps,
+          equipment: newExercise.equipment,
+          difficulty: newExercise.difficulty,
+          description: newExercise.description,
+          instructions: newExercise.instructions,
+          tips: newExercise.tips,
+        };
+
+        this.setState({
+          selectedExercises: [...this.state.selectedExercises, selectedExercise]
+        });
+      };
     }
-  }else {
+    console.log("selectedExerciseState:", this.state.selectedExercises);
+  }
+  formatWorkout = () => {
+    // console.log("Selected:", this.state.selectedExercises);
+    const tempArr = []
+    // this.state.selectedExercises.forEach(exercise => {
+    //   
+    //   console.log("TempARR: ", tempArr);
+    // })
+    // this.setState({
+    //   workout: [tempArr]
+    // }, this.saveWorkout(tempArr));
 
-    const selectedExercise = { name: result.Name, exercise: result._id };
-    //selectedExercises.push(selectedExercise);
-    this.setState({
-      selectedExercises: [...this.state.selectedExercises, selectedExercise]
-    });
-  };
-    }
-    formatWorkout = () => {
-      
-      const tempArr = []
-      this.state.selectedExercises.forEach(exercise => {
-tempArr.push(exercise.exercise);
-console.log("TempARR: ",tempArr);
-      })
-      this.setState({
-        workout: [tempArr]
-      }, this.saveWorkout(tempArr));
-     
-
-    console.log("WORKOUT: ",this.state.workout);
+    this.state.selectedExercises.map(exercise => {
+      console.log("exercise", exercise);
+      tempArr.push(exercise);
+    })
+    console.log("WORKOUT: ", tempArr);
 
   }
-  saveWorkout = (tempArr) => {
+  saveWorkout = () => {
+    this.formatWorkout();
+    console.log("saving?", this.state.selectedExercises);
     API.saveWorkout({
       Name: this.state.workoutName,
-      Exercises: tempArr,
+      Exercises: this.state.selectedExercises,
       Dates: []
-    }).catch(err => console.log("WorkoutDb: ",err));
+    }).then(
+      res => {
+      this.setState({
+        workoutName: "",
+        selectedExercise: "",
+        selectedExercises: [],
+      })
+    })
+    .catch(err => console.log("WorkoutDb: ", err));
   };
   deleteExercise = id => {
-
+    //switch this function to make it so if you add multiple of an exercise you have to click remove on each one.
     console.log("State of selectedExercises in deleteExercise: ", this.state.selectedExercises);
     const clickedExercise = this.state.selectedExercises.filter(selectedExercise => selectedExercise.exercise !== id);
+
     this.setState({ selectedExercises: clickedExercise });
     console.log("After Delete Button: ", this.state.selectedExercises);
   };
 
   btnUnclick = () => {
-      
+
     this.setState({
       isButtonDisabled: false
     });
@@ -180,76 +236,98 @@ console.log("TempARR: ",tempArr);
     console.log(value);
   };
 
+  repChange = event => {
+    const value = event.target;
+    this.setState({
+      reps: value
+    });
+    console.log(value);
+  };
 
   accordionClick = event => {
-  
+
     const { name, value } = event.target;
-   
-  switch(value){
-  case "Cardio":
-  if(this.state.cardiosClicked === false){
-  API.getExercises(value)
-  .then(
-    res => {console.log("type Results", res.data);
-    const cardios = res.data;
-    this.setState({cardios: cardios,
-    cardiosClicked: true
-    });
-    this.sortMuscles();}).catch(err => console.log(err));
 
-  }
-  break;
-  case "Olympic Weight Lifting":
-  if(this.state.olympicsClicked === false){
-  API.getExercises(value)
-  .then(
-    res => {console.log("type Results", res.data);
-    const olympics= res.data; 
-    this.setState({olympics: olympics,
-    olympicsClicked: true
-    });
-    this.sortMuscles();}).catch(err => console.log(err));
-  }
-  break;
-  case "Powerlifting":
-  if(this.state.powerliftingsClicked === false){
-  API.getExercises(value)
-  .then(
-    res => {console.log("type Results", res.data);
-    const powerliftings= res.data; 
-    this.setState({powerliftings: powerliftings,
-    powerliftingsClicked: true
-    });
-    this.sortMuscles();}).catch(err => console.log(err));
-  }
-  break;
-  case "Strength":
-  if(this.state.strengthsClicked === false){
-  API.getExercises(value)
-  .then(
-    res => {console.log("type Results", res.data);
-    const strengths= res.data; 
-    this.setState({strengths: strengths,
-    strengthsClicked: true,
-    loading:false
-  });
-    this.sortMuscles();}).catch(err => console.log(err));
-  }
-  break;
-  case "Stretching":
-  if(this.state.stretchesClicked === false){
-  API.getExercises(value)
-  .then(
-    res => {console.log("type Results", res.data);
-    const stretches= res.data;
-    this.setState({stretches: stretches,
-    stretchesClicked: true
-    });
-    this.sortMuscles();}).catch(err => console.log(err));
-  }
-  break;
+    switch (value) {
+      case "Cardio":
+        if (this.state.cardiosClicked === false) {
+          API.getExercises(value)
+            .then(
+              res => {
+                console.log("type Results", res.data);
+                const cardios = res.data;
+                this.setState({
+                  cardios: cardios,
+                  cardiosClicked: true
+                });
+                this.sortMuscles();
+              }).catch(err => console.log(err));
 
-  }
+        }
+        break;
+      case "Olympic Weight Lifting":
+        if (this.state.olympicsClicked === false) {
+          API.getExercises(value)
+            .then(
+              res => {
+                console.log("type Results", res.data);
+                const olympics = res.data;
+                this.setState({
+                  olympics: olympics,
+                  olympicsClicked: true
+                });
+                this.sortMuscles();
+              }).catch(err => console.log(err));
+        }
+        break;
+      case "Powerlifting":
+        if (this.state.powerliftingsClicked === false) {
+          API.getExercises(value)
+            .then(
+              res => {
+                console.log("type Results", res.data);
+                const powerliftings = res.data;
+                this.setState({
+                  powerliftings: powerliftings,
+                  powerliftingsClicked: true
+                });
+                this.sortMuscles();
+              }).catch(err => console.log(err));
+        }
+        break;
+      case "Strength":
+        if (this.state.strengthsClicked === false) {
+          API.getExercises(value)
+            .then(
+              res => {
+                console.log("type Results", res.data);
+                const strengths = res.data;
+                this.setState({
+                  strengths: strengths,
+                  strengthsClicked: true,
+                  loading: false
+                });
+                this.sortMuscles();
+              }).catch(err => console.log(err));
+        }
+        break;
+      case "Stretching":
+        if (this.state.stretchesClicked === false) {
+          API.getExercises(value)
+            .then(
+              res => {
+                console.log("type Results", res.data);
+                const stretches = res.data;
+                this.setState({
+                  stretches: stretches,
+                  stretchesClicked: true
+                });
+                this.sortMuscles();
+              }).catch(err => console.log(err));
+        }
+        break;
+
+    }
   };
 
 
@@ -260,11 +338,11 @@ console.log("TempARR: ",tempArr);
         <Row>
 
           <Col size="md-3 sm-12">
-          
-          <ModalExample
-          buttonLabel="Button"/>
+
+            <ModalExample
+              buttonLabel="Button" />
             <div className="accordion" id="accordionExample">
-             
+
               <div className="card">
                 <div className="card-header" id="headingOne">
                   <h5 className="mb-0">
@@ -274,10 +352,10 @@ console.log("TempARR: ",tempArr);
                   </h5>
                 </div>
                 <div id="collapseOne" className="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                
+
                   <div className="card-body">
                     <ul>
-                      
+
                       {this.state.cardiosMuscles.map(cardio => (
                         <ExerciseType
                           key={cardio.replace(/\s/g, '') + "Type"}
@@ -294,14 +372,14 @@ console.log("TempARR: ",tempArr);
                               equipment={cardios.Equipment}
                               difficulty={cardios.Difficulty}
                               data={cardios}
-                              
+                              repChange={this.repChange}
                               saveExercise={this.saveExercise}
                             />))}
                         </ExerciseType>
                       ))}
                     </ul>
                   </div>
-               
+
                 </div>
               </div>
 
@@ -332,7 +410,7 @@ console.log("TempARR: ",tempArr);
                               equipment={olympics.Equipment}
                               difficulty={olympics.Difficulty}
                               data={olympics}
-                             
+                              repChange={this.repChange}
                               saveExercise={this.saveExercise}
 
                             />))}
@@ -372,7 +450,7 @@ console.log("TempARR: ",tempArr);
                               equipment={powerliftings.Equipment}
                               difficulty={powerliftings.Difficulty}
                               data={powerliftings}
-                              
+                              repChange={this.repChange}
                               saveExercise={this.saveExercise}
 
                             />))}
@@ -393,35 +471,35 @@ console.log("TempARR: ",tempArr);
                 </div>
                 <div id="collapseFour" className="collapse" aria-labelledby="headingFour" data-parent="#accordionExample">
                   <div className="card-body">
-                  {loading ?( <LoadingSpinner /> ) : (
-                    <ul>
-                    
-                      {this.state.strengthsMuscles.map(strength => (
+                    {loading ? (<LoadingSpinner />) : (
+                      <ul>
 
-                        <ExerciseType
-                          key={strength.replace(/\s/g, '') + "Type"}
-                          id={strength.replace(/\s/g, '') + "Type"}
-                          group={strength}
-                        >
-                          {this.state.strengths.map(strengths => (
-                            <CollapseItem
-                              key={strengths._id}
-                              name={strengths.Name}
-                              id={strengths._id}
-                              otherMuscleGroups={strengths.Other_Muscle_Groups}
-                              detailedMuscleGroup={strengths.Detailed_Muscle_Group}
-                              equipment={strengths.Equipment}
-                              difficulty={strengths.Difficulty}
-                              data={strengths}
-                              
-                              saveExercise={this.saveExercise}
+                        {this.state.strengthsMuscles.map(strength => (
 
-                            />))}
-                        </ExerciseType>
-                      ))}
-                   
-                        
-                    </ul>
+                          <ExerciseType
+                            key={strength.replace(/\s/g, '') + "Type"}
+                            id={strength.replace(/\s/g, '') + "Type"}
+                            group={strength}
+                          >
+                            {this.state.strengths.map(strengths => (
+                              <CollapseItem
+                                key={strengths._id}
+                                name={strengths.Name}
+                                id={strengths._id}
+                                otherMuscleGroups={strengths.Other_Muscle_Groups}
+                                detailedMuscleGroup={strengths.Detailed_Muscle_Group}
+                                equipment={strengths.Equipment}
+                                difficulty={strengths.Difficulty}
+                                data={strengths}
+                                repChange={this.repChange}
+                                saveExercise={this.saveExercise}
+
+                              />))}
+                          </ExerciseType>
+                        ))}
+
+
+                      </ul>
                     )}
                   </div>
                 </div>
@@ -456,7 +534,7 @@ console.log("TempARR: ",tempArr);
                               equipment={stretches.Equipment}
                               difficulty={stretches.Difficulty}
                               saveExercise={this.saveExercise}
-                         
+                              repChange={this.repChange}
 
                             >
 
@@ -493,14 +571,15 @@ console.log("TempARR: ",tempArr);
                         key={exercise.exercise}
                         id={exercise.exercise}
                         name={exercise.name}
+                        reps={exercise.reps}
                         deleteExercise={this.deleteExercise}
                       />
                     ))}
                     <FormBtn
-                  formatWorkout={this.formatWorkout}
-                />
+                      saveWorkout={this.saveWorkout}
+                    />
                   </div>
-                  
+
                 )}
             </div>
 

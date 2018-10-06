@@ -34,7 +34,7 @@ class External extends React.Component {
 			<div className='fc-event'>Workout 5</div>
 			<p>
 				<input type='checkbox' id='drop-remove' />
-				<label for='drop-remove'>remove after drop</label>
+				<label htmlFor='drop-remove'>remove after drop</label>
 			</p>
 		</div>;
   }

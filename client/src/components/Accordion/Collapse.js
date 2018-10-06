@@ -1,8 +1,8 @@
 import React from "react";
 import { Popover, PopoverHeader, PopoverBody } from 'reactstrap';
-import LoadingSpinner from "../../components/Loading/Spinner.js";
-
-
+//import LoadingSpinner from "../../components/Loading/Spinner.js";
+import "./Accordion.css";
+//import NumericInput from 'react-numeric-input';
 
 export default class CollapseItem extends React.Component {
     state = {
@@ -29,11 +29,13 @@ export default class CollapseItem extends React.Component {
            
             <div>
  
-                <li onMouseOver={this.toggle} onMouseOut={this.toggle} id={'Popover-' + this.props.id}>
+                <li className={this.props.difficulty} onMouseOver={this.toggle} onMouseOut={this.toggle} id={'Popover-' + this.props.id}>
                 
                 
                 
                     <p id={this.props.id}>{this.props.name}</p>
+                    {/*<NumericInput className={this.props.id} min={0} />
+                    <input type="number" min="0" onChange={() => this.props.repChange()}/>*/}
                     <button  ref={btn => { this.btn = btn; }}  id={this.props.id} className="btn btn-primary" onClick={() => this.props.saveExercise(this.props.data)}>
                         Add
                     </button>
@@ -51,9 +53,6 @@ export default class CollapseItem extends React.Component {
                             <li className="list-group-item">Equipment Needed: {this.props.equipment}</li>
                             <li className="list-group-item">Exercise Difficulty: {this.props.difficulty}</li>
                         </ul>
-                        
-
-
 
                     </PopoverBody>
                 </Popover>
