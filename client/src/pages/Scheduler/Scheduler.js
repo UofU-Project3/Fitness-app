@@ -24,12 +24,14 @@ class External extends React.Component {
   render() {
     return <div id='external-workouts'>
 			<h4>Drag and Drop Workouts</h4>
+
       <div>
       {this.state.filteredWorkouts.map(filteredWorkout => (
 			<div key={filteredWorkout._id} className='fc-event' data-duration="01:00">{filteredWorkout.Name}</div>
 			
       ))}
       </div>
+
 		</div>;
   }
   componentDidMount() {
@@ -49,8 +51,10 @@ console.log(CreatedBy);
 			 $(this).draggable({
 				zIndex: 999,
 				revert: true,      // will cause the event to go back to its
+
         revertDuration: 0  //  original position after the drag
         
+
 			}); 
     });
     
@@ -85,10 +89,12 @@ class Calendar extends React.Component {
       defaultView: 'agendaWeek',
       editable: true,
       eventTextColor: "yellow",
-      droppable: true, 
-      drop: function(date) {
+
+      droppable: true,
+      /* drop: function(date) {
         alert("Dropped on " + date.format());
-      }
+      } */
+
 
 			
     })
