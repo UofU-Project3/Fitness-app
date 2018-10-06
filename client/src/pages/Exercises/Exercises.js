@@ -140,7 +140,16 @@ class Exercises extends Component {
           alert("Workout must be named!");
         } else {
 
-          const selectedExercise = { name: newExercise.name, exercise: newExercise.id, reps: newExercise.reps };
+          const selectedExercise = {
+            name: newExercise.name,
+          exercise: newExercise.id,
+          reps: newExercise.reps,
+          equipment: newExercise.equipment,
+          difficulty: newExercise.difficulty,
+          description: newExercise.description,
+          instructions: newExercise.instructions,
+          tips: newExercise.tips,
+          };
 
           this.setState({
             selectedExercises: [...this.state.selectedExercises, selectedExercise],
@@ -150,29 +159,39 @@ class Exercises extends Component {
         }
       } else {
 
-        const selectedExercise = { name: newExercise.name, exercise: newExercise.id, reps: newExercise.reps };
+        const selectedExercise = {
+          name: newExercise.name,
+          exercise: newExercise.id,
+          reps: newExercise.reps,
+          equipment: newExercise.equipment,
+          difficulty: newExercise.difficulty,
+          description: newExercise.description,
+          instructions: newExercise.instructions,
+          tips: newExercise.tips,
+        };
 
         this.setState({
           selectedExercises: [...this.state.selectedExercises, selectedExercise]
         });
       };
     }
+    console.log("selectedExerciseState:", this.state.selectedExercises);
   }
   formatWorkout = () => {
-   // console.log("Selected:", this.state.selectedExercises);
+    // console.log("Selected:", this.state.selectedExercises);
     const tempArr = []
-   // this.state.selectedExercises.forEach(exercise => {
-   //   
-   //   console.log("TempARR: ", tempArr);
-   // })
-   // this.setState({
-   //   workout: [tempArr]
-   // }, this.saveWorkout(tempArr));
+    // this.state.selectedExercises.forEach(exercise => {
+    //   
+    //   console.log("TempARR: ", tempArr);
+    // })
+    // this.setState({
+    //   workout: [tempArr]
+    // }, this.saveWorkout(tempArr));
 
-this.state.selectedExercises.map(exercise => {
-  console.log("exercise", exercise);
-  tempArr.push(exercise);
-} )
+    this.state.selectedExercises.map(exercise => {
+      console.log("exercise", exercise);
+      tempArr.push(exercise);
+    })
     console.log("WORKOUT: ", tempArr);
 
   }
@@ -183,7 +202,15 @@ this.state.selectedExercises.map(exercise => {
       Name: this.state.workoutName,
       Exercises: this.state.selectedExercises,
       Dates: []
-    }).catch(err => console.log("WorkoutDb: ", err));
+    }).then(
+      res => {
+      this.setState({
+        workoutName: "",
+        selectedExercise: "",
+        selectedExercises: [],
+      })
+    })
+    .catch(err => console.log("WorkoutDb: ", err));
   };
   deleteExercise = id => {
     //switch this function to make it so if you add multiple of an exercise you have to click remove on each one.
