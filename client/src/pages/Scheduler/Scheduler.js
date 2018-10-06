@@ -25,6 +25,7 @@ class External extends React.Component {
 			<div className='fc-event'>Workout 3</div>
 			<div className='fc-event'>Workout 4</div>
 			<div className='fc-event'>Workout 5</div>
+
 		</div>;
   }
   componentDidMount() {
