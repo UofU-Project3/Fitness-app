@@ -2,67 +2,47 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./Nav.css";
 
-// Depending on the current path, this component sets the "active" class on the appropriate navigation link item
-const Nav = props => (
-  <nav className="navbar navbar-expand-lg navbar-light bg-light">
-    <Link className="navbar-brand" to="/">
-      Home
-    </Link>
-    <div>
-      <ul className="navbar-nav">
-        <li className="nav-item">
-          <Link
-            to="/"
-            className={
-              window.location.pathname === "/" || window.location.pathname === "/home"
-                ? "nav-link active"
-                : "nav-link"
-            }
-          >
-            Home
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link
-            to="/dashboard"
-            className={
-              window.location.pathname === "/dashboard"
-                ? "nav-link active"
-                : "nav-link"
-            }
-          >
-            Dashboard
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link
-            to="/scheduler"
-            className={
-              window.location.pathname === "/scheduler"
-                ? "nav-link active"
-                : "nav-link"
-            }
-          >
-            Calendar
-          </Link>
-        </li>
+const DisplayLinks = props => {
+	if (props.loggedIn) {
+		return (
+			<nav className="navbar">
+				<ul className="nav">
+					<li className="nav-item">
+						<Link to="/" className="nav-link">
+							Home
+						</Link>
+					</li>
+					<li>
+						<Link to="#" className="nav-link" onClick={props._logout}>
+							Logout
+						</Link>
+					</li>
+				</ul>
+			</nav>
+		)
+	} else {
+		return (
+			<nav className="navbar">
+				<ul className="nav">
+					<li className="nav-item">
+						<Link to="/" className="nav-link">
+							Home
+						</Link>
+					</li>
+					<li className="nav-item">
+						<Link to="/login" className="nav-link">
+							login
+						</Link>
+					</li>
+					<li className="nav-item">
+						<Link to="/signup" className="nav-link">
+							sign up
+						</Link>
+					</li>
+				</ul>
+			</nav>
+		)
+	}
+}
 
-         <li className="nav-item">
-          <Link
-            to="/register"
-            className={
-              window.location.pathname === "/register"
-                ? "nav-link active"
-                : "nav-link"
-            }
-          >
-            Register
-          </Link>
-        </li>
-
-      </ul>
-    </div>
-  </nav>
-);
-
-export default Nav;
+export default DisplayLinks;

@@ -1,26 +1,24 @@
 const User = require('../models/user')
-const db = require("../models");
 const LocalStrategy = require('passport-local').Strategy;
 
 const strategy = new LocalStrategy(
 	{
-		usernameField: 'email', // not necessary, DEFAULT
-		passReqToCallback: true,
-		session: true
+		usernameField: 'username', // not necessary, DEFAULT
+		
 	},
-	function(Email, Password, done) {
-		console.log("Local:", Email);
-		User.findOne({ Email: Email }, (err, user) => {
+	function(username, password, done) {
+		console.log("Local:", username);
+		User.findOne({ username: username }, (err, userMatch) => {
 			if (err) {
 				return done(err)
 			}
-			if (!user) {
-				return done(null, false, { message: 'Incorrect Email' })
+			if (!userMatch) {
+				return done(null, false, { message: 'Incorrect Username' })
 			}
-			if (!user.checkPassword(Password)) {
+			if (!userMatch.checkPassword(password)) {
 				return done(null, false, { message: 'Incorrect Password' })
 			}
-			return done(null, user)
+			return done(null, userMatch)
 		})
 	}
 )

@@ -13,9 +13,15 @@ export default {
 
     
   },
+  getCookie: function() {
+    return axios.get("/api/user/profile");
+  },
   // Gets the exercise with the given id
   getExercise: function(id) {
     return axios.get("/api/exercise/" + id);
+  },
+  getWorkouts: function() {
+    return axios.get("/api/workouts");
   },
   // Deletes the exercise with the given id
   deleteExercise: function(id) {

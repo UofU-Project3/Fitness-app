@@ -6,15 +6,17 @@ const db = require("../models");
 module.exports = {
   findAll: function(req, res) {
     db.Workout
-      .find(req.query)
-      .sort({ date: -1 })
+      .find({})
+      
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
       
   },
   findById: function(req, res) {
+    console.log("Params: ", req.params.CreatedBy); 
+    const id = JSON.stringify(req.params.id);
     db.Workout
-      .findById(req.params.id)
+      .find({CreatedBy: id})
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
   },

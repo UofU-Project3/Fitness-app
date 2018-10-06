@@ -3,10 +3,9 @@ const User = require("../models/user");
 // Defining methods for the UsersController
 module.exports = {
   findAll: function(req, res) {
-    
-    db.User
-      .find(req.query)
-      .sort({ date: -1 })
+    console.log(req.session);
+    db.getCollection('sessions').find({})
+      
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));
       
@@ -39,21 +38,21 @@ module.exports = {
 
 findOne: function(req, res){
   console.log('user signup');
-  const{ Email, Password, Name} = req.body
+  const{ username, password, Name} = req.body
   db.User
-  .findOne({Email:Email}, (err, user) => {
+  .findOne({username:username}, (err, user) => {
   if (err) {
     console.log('User.js post error: ', err)
 } else if (user) {
     res.json({
-        error: `Sorry, already a user with the email: ${Email}`
+        error: `Sorry, already a user with the username: ${username}`
     })
 }
 else {
     const newUser = new User({
         Name: Name,
-        Password: Password,
-        Email: Email
+        password: password,
+        username: username
     })
     newUser.save((err, savedUser) => {
         if (err) return res.json(err)
@@ -70,3 +69,10 @@ else {
 
   
 };
+const mongoose = require("mongoose");
+
+
+mongoose.connect(
+  process.env.MONGODB_URI ||
+  "mongodb://localhost/exerciselist"
+);

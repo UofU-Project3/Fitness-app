@@ -3,6 +3,7 @@ const exerciseRoutes = require("./exercise.js");
 const workoutRoutes = require("./workout");
 const userRoutes = require("./user");
 
+
 // Exercise routes
 router.use("/exercises", exerciseRoutes);
 router.use("/workouts", workoutRoutes);

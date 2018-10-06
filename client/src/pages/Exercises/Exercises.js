@@ -36,15 +36,16 @@ class Exercises extends Component {
       olympicsClicked: false,
       cardiosClicked: false,
       powerliftingsClicked: false,
-      reps: ""
+      reps: "",
+      currentUser: ""
     }
     this.btn = React.createRef();
   };
   //need an onClick Function to toggle collapses
 
-  componentDidMount() {
-
-    //this.typeExercises();
+  componentWillMount() {
+const id = sessionStorage.getItem('userId');
+this.setState({currentUser:id})
   }
 
 
@@ -129,7 +130,8 @@ class Exercises extends Component {
         instructions: [result.Instructions],
         tips: [result.Tips],
         reps: reps,
-        id: result._id
+        id: result._id,
+       
       };
       console.log("saveExercise New:", newExercise);
       const workoutName = this.state.workoutName;
@@ -149,6 +151,7 @@ class Exercises extends Component {
           description: newExercise.description,
           instructions: newExercise.instructions,
           tips: newExercise.tips,
+          
           };
 
           this.setState({
@@ -168,6 +171,7 @@ class Exercises extends Component {
           description: newExercise.description,
           instructions: newExercise.instructions,
           tips: newExercise.tips,
+          
         };
 
         this.setState({
@@ -201,7 +205,8 @@ class Exercises extends Component {
     API.saveWorkout({
       Name: this.state.workoutName,
       Exercises: this.state.selectedExercises,
-      Dates: []
+      Dates: [],
+      CreatedBy: this.state.currentUser
     }).then(
       res => {
       this.setState({
@@ -341,6 +346,8 @@ class Exercises extends Component {
 
             <ModalExample
               buttonLabel="Button" />
+
+
             <div className="accordion" id="accordionExample">
 
               <div className="card">
