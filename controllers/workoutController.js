@@ -6,7 +6,7 @@ const db = require("../models");
 module.exports = {
   findAll: function(req, res) {
     db.Workout
-      .find({})
+      .find()
       
       .then(dbModel => res.json(dbModel))
       .catch(err => res.status(422).json(err));

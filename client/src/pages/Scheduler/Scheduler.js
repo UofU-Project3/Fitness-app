@@ -17,16 +17,18 @@ import 'fullcalendar/dist/fullcalendar.js';
 
 
 class External extends React.Component {
-  
+  state ={
+    workouts:[]
+  };
   render() {
     return <div id='external-workouts'>
 			<h4>Drag and Drop Workouts</h4>
-			<div className='fc-event' data-duration="01:00">{this.props.value}</div>
-			<div className='fc-event'>Workout 2</div>
-			<div className='fc-event'>Workout 3</div>
-			<div className='fc-event'>Workout 4</div>
-			<div className='fc-event'>Workout 5</div>
-
+      <div>
+      {this.state.workouts.map(workout => (
+			<div className='fc-event' data-duration="01:00">{workout.Name}</div>
+			
+      ))}
+      </div>
 		</div>;
   }
   componentDidMount() {
@@ -54,7 +56,9 @@ console.log(CreatedBy);
   }
   getWorkouts = CreatedBy => {
     API.getWorkouts()
-      .then(res => console.log("WOrkouts:",res.data))
+      .then(res => this.setState({
+        workouts: res.data,
+       }))
       .catch(err => console.log(err));
   };
 }

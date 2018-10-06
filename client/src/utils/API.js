@@ -21,7 +21,7 @@ export default {
     return axios.get("/api/exercise/" + id);
   },
   getWorkouts: function() {
-    return axios.get("/api/workouts");
+    return axios.get("/api/workouts/workouts");
   },
   // Deletes the exercise with the given id
   deleteExercise: function(id) {
